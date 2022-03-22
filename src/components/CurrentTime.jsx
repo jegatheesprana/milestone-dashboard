@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import {
     Navbar,
     Container,
@@ -10,10 +10,31 @@ import {
     Card
 } from "react-bootstrap"
 import { measurments, colors } from "../config"
+import moment from "moment"
 
 const times = ['EST Time', 'CST Time', 'IST Time']
 
-const CurrentTime = () => {
+const CurrentTime = ({duration='4hrs 20mins', jobRun='02/22/2022 2:30'}) => {
+    const arr = duration.trim().split(' ')
+    const obj={}
+    arr.map((val, id)=>{
+        obj[val.replace(/[0-9]/g, '')] = val.match(/\d/g).join('')
+    })
+    const [time,setTime] = useState({
+        hrs: '',
+        mins: ''
+    })
+    console.log(arr[0].replace(/[0-9]/g, '')=='hrs')
+    useEffect(()=>{
+        setTime(obj)
+    },[])
+    
+
+    // const newDate = moment(jobRun).format('YYYY-MM-DDTHH:mm')
+
+    const dateNOW=new Date(parseInt(moment(jobRun).format('YYYY')),parseInt(moment(jobRun).format('MM')),parseInt(moment(jobRun).format('DD')),(parseInt(moment(jobRun).format('HH'))+parseInt(time?.hrs)),(parseInt(moment(jobRun).format('mm'))+parseInt(time?.mins)))
+    console.log(dateNOW);
+    
     return (
         <Container
             fluid
@@ -46,7 +67,7 @@ const CurrentTime = () => {
                         </Col>
                         <Col sm={3} className='mt-2'>
                             <Row style={{color: `${colors.currentTime.subColor}`, fontWeight:'bold'}} >
-                                <h6>Upcoming/Current<br/>Job Run</h6>
+                                <h6>Expected Completion<br/>Time</h6>
                             </Row>
                         </Col>
                         <Col sm={3} className='mt-2'>
@@ -84,6 +105,7 @@ const CurrentTime = () => {
                     </Row>
                 </Col>
             </Row>
+            {console.log(dateNOW)}
         </Container>
     )
 }

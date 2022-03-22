@@ -11,14 +11,17 @@ const colors = {
         font: '#F57878',
         header: '#717579'
     },
-    milestoneColor:{
+    milestoneColor: {
         completed: "#6BEF98",
         longRunning: "#FFA15C",
         upcoming: "#837d81",
         warning: "#CA59FF"
     },
     progressedColor: "#20c997",
-    progressPendingColor: "#837d81"
+    progressPendingColor: "#837d81",
+    currentTime: {
+        subColor: '#636567'
+    }
 }
 
 const measurments = {

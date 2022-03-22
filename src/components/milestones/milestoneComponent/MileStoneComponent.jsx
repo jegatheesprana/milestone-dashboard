@@ -3,7 +3,7 @@ import { colors, measurments } from "../../../config"
 import Detail from "./Detail"
 import Stepper from "./Stepper"
 
-const MileStoneComponent = ({stage}) => {
+const MileStoneComponent = ({ stage }) => {
     return (
         <Card
             bg="dark"
@@ -40,13 +40,13 @@ const MileStoneComponent = ({stage}) => {
                             </Col>
                         </Row>
                     </Col>
-                    
+
                     <Col xs={1} sm={1} className="pt-3 px-4 text-end">
-                        <i class="bi bi-three-dots-vertical"></i>
+                        <i className="bi bi-three-dots-vertical"></i>
                     </Col>
                 </Row>
                 <Row>
-                    <Stepper stage={stage}/>
+                    <Stepper stage={stage} />
                 </Row>
             </Card.Body>
         </Card>

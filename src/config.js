@@ -10,6 +10,9 @@ const colors = {
     milestone: {
         font: '#F57878',
         header: '#717579'
+    },
+    currentTime: {
+        subColor: '#636567'
     }
 }
 

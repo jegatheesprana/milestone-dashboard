@@ -32,9 +32,9 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     </Button>
 ))
 
-const Header = ({ data, currentDate, setCurrentDate }) => {
+const Header = ({ data, selectedDate, setSelectedDate }) => {
     const handleClick = (date) => {
-        setCurrentDate(date)
+        setSelectedDate(date)
     }
     return (
         <Container fluid className="py-2 bg-dark text-white">
@@ -69,7 +69,7 @@ const Header = ({ data, currentDate, setCurrentDate }) => {
                             {data.map((data, id) => (
                                 <Dropdown.Item
                                     key={id}
-                                    onClick={() => handleClick(data)}
+                                    onClick={() => handleClick(id)}
                                 >
                                     {data["Run time"]}
                                 </Dropdown.Item>

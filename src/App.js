@@ -4,6 +4,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import './App.css';
 import { Container } from 'react-bootstrap';
 import { Header, CurrentTime, TaskStatus, MileStones } from './components';
+import Stepper from './components/milestones/milestoneComponent/Stepper';
 
 function App() {
   return (
@@ -12,7 +13,9 @@ function App() {
       <CurrentTime />
       <TaskStatus />
       <MileStones />
+
     </Container>
+
   );
 }
 

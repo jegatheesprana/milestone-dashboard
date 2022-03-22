@@ -1,8 +1,9 @@
 import { Card, Row, Col } from "react-bootstrap"
 import { colors, measurments } from "../../../config"
 import Detail from "./Detail"
+import Stepper from "./Stepper"
 
-const MileStoneComponent = () => {
+const MileStoneComponent = ({stage}) => {
     return (
         <Card
             bg="dark"
@@ -10,7 +11,7 @@ const MileStoneComponent = () => {
         >
             <Card.Body>
                 <Row>
-                    <Col sm={4}>
+                    <Col xs={11} sm={4}>
                         <h4>Milestone 1</h4>
                         <p>Avg time - 1hr 40 Mins</p>
                         <h4 style={{ color: colors.milestone.font }}>
@@ -39,9 +40,13 @@ const MileStoneComponent = () => {
                             </Col>
                         </Row>
                     </Col>
-                    <Col sm={1} className="pt-3 px-4 text-end">
+                    
+                    <Col xs={1} sm={1} className="pt-3 px-4 text-end">
                         <i class="bi bi-three-dots-vertical"></i>
                     </Col>
+                </Row>
+                <Row>
+                    <Stepper stage={stage}/>
                 </Row>
             </Card.Body>
         </Card>

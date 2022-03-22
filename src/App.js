@@ -27,23 +27,20 @@ function App() {
                     }, {});
                 });
                 setData(converted)
-                setLoading(false)
             })
     }, [])
 
     useEffect(() => {
-        if (!selectedDate) return
-        setLoading(true)
-        const filename =
-            import(`./data/${data[selectedDate]['Json output']}`).then(data => {
-                console.log(data.default)
-                setTaskData(data.default)
-                setLoading(false)
-            }).catch(e => {
-                console.log(e)
-                setLoading(false)
-            })
-    }, [selectedDate])
+        if (!data) return
+        import(`./data/${data[selectedDate]['Json output']}`).then(data => {
+            console.log(data.default)
+            setTaskData(data.default)
+            setLoading(false)
+        }).catch(e => {
+            console.log(e)
+            setLoading(false)
+        })
+    }, [selectedDate, data])
 
     if (loading) return null
     return (

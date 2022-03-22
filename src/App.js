@@ -9,8 +9,8 @@ import csv from './data/runtype.csv'
 
 function App() {
     const [data, setData] = useState()
-    const [currentDate, setCurrentDate] = useState()
-    const [currentData, setCurrentData] = useState()
+    const [selectedDate, setSelectedDate] = useState(0)
+    const [taskData, setTaskData] = useState()
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -27,27 +27,26 @@ function App() {
                     }, {});
                 });
                 setData(converted)
-                setCurrentDate(converted[0])
-                setLoading(false)
             })
     }, [])
 
     useEffect(() => {
-        if (!currentDate) return
-        setLoading(true)
-        const filename =
-            import(`./data/${currentDate['Json output']}`).then(data => {
-                console.log(data.default)
-                setCurrentData(data.default)
-                setLoading(false)
-            })
-    }, [currentDate])
+        if (!data) return
+        import(`./data/${data[selectedDate]['Json output']}`).then(data => {
+            console.log(data.default)
+            setTaskData(data.default)
+            setLoading(false)
+        }).catch(e => {
+            console.log(e)
+            setLoading(false)
+        })
+    }, [selectedDate, data])
 
     if (loading) return null
     return (
-        <Container className="mt-2">
-            <Header data={data} currentDate={currentDate} setCurrentDate={setCurrentDate} />
-            <CurrentTime />
+        <Container className="my-3">
+            <Header data={data} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+            <CurrentTime data={data} selectedDate={selectedDate} taskData={taskData} />
             <TaskStatus />
             <MileStones />
         </Container>

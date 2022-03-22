@@ -37,7 +37,7 @@ const MileStones = () => {
             { index: 12, type: "upcoming" },
         ],
     ]
-    return [1, 2, 3].map((milestone, id) => <MileStone stage={stages[id]} />)
+    return [1, 2, 3].map((milestone, id) => <MileStone stage={stages[id]} key={id}/>)
 }
 
 export default MileStones

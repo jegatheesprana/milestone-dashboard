@@ -1,0 +1,13 @@
+.roundCont {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
+
+.taskCont {
+    padding: 10px;
+    min-height: 70px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}

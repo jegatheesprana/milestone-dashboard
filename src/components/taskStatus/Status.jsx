@@ -19,7 +19,7 @@ const Status = ({ title, bg }) => {
                             rx="33.8778"
                             ry="29.4742"
                             fill="white"
-                            fill-opacity="0.43"
+                            fillOpacity="0.43"
                         />
                         <ellipse
                             cx="34.5677"
@@ -27,7 +27,7 @@ const Status = ({ title, bg }) => {
                             rx="33.8778"
                             ry="29.4742"
                             fill="white"
-                            fill-opacity="0.43"
+                            fillOpacity="0.43"
                         />
                     </svg>
                 </div>

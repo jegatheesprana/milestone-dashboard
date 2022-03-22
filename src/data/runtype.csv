@@ -1,0 +1,11 @@
+Run time,CSV file,window frame - start time,window frame - end time,Total duration(expected),number of taks,Json output,no of milestones
+03/02/2022 2.00 AM,2.30am_jobs.csv,0:30,23:30,4 hrs,30,03022022 2.00 AM.json,3
+03/03/2022 2.00 AM,2.30am_jobs.csv,2:00,23:30,4 hrs 20 mins,30,03032022 2.00 AM.json,3
+03/04/2022 2.00 AM,2.30am_jobs.csv,2:00,23:30,4 hrs 20 mins,30,03042022 2.00 AM.json,3
+03/01/2022 4.30 PM,4.30pm_jobs.csv,0:00,23:30,4 hrs 20 mins,30,03012022 4.30 PM.json,3
+03/01/2022 2.00 AM,2.30am_jobs.csv,0:00,23:30,4 hrs 20 mins,30,03012022 2.00 AM.json,3
+03/10/2022 4.30 PM,BP & IBP jobs.csv,0:00,23:30,5 hrs 40 mins,35,03102022 4.30 PM.json,4
+03/11/2022 4.30 PM,BP & IBP jobs.csv,0:00,23:30,5 hrs 40 mins,35,03112022 4.30 PM.json,4
+03/08/2022 4.30 PM,"BP, PaPM & IBP jobs.csv",0:00,23:30,5 hrs 40 mins,36,03102022 4.30 PM.json,5
+03/09/2022 4.30 PM,"BP, PaPM & IBP jobs.csv",0:00,23:30,6 hrs 50 mins,36,03102022 4.30 PM.json,5
+03/07/2022 4.30 PM,"BP, Masterdata & IBP jobs.csv",0:00,23:30,10 hrs,37,03072022 4.30 PM.json,6

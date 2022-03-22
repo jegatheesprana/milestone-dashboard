@@ -40,7 +40,7 @@ const MileStoneComponent = () => {
                         </Row>
                     </Col>
                     <Col sm={1} className="pt-3 px-4 text-end">
-                        <i class="bi bi-three-dots-vertical"></i>
+                        <i className="bi bi-three-dots-vertical"></i>
                     </Col>
                 </Row>
             </Card.Body>

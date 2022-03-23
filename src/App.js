@@ -23,7 +23,7 @@ function csvToArray(data) {
     const lines = data.split('\r\n');
     return lines.map(line => {
         return line.split(',')
-    });
+    }).slice(0, lines.length - 1);
 }
 
 function App() {

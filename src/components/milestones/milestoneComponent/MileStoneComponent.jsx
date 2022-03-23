@@ -125,7 +125,9 @@ const MileStoneComponent = ({ milestone, stage }) => {
                                 <Popover id="popover-contained">
                                     {/* <Popover.Header as="h3"  >Popover bottom</Popover.Header> */}
                                     <Popover.Body>
-                                        <strong>Popover bottom</strong>
+                                        <strong>
+                                            {milestone.data["Job Folder Name"]}
+                                        </strong>
                                     </Popover.Body>
                                 </Popover>
                             </Overlay>

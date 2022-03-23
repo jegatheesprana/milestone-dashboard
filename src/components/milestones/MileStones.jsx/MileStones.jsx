@@ -1,6 +1,6 @@
 import MileStone from "../milestoneComponent/MileStoneComponent"
 
-const MileStones = () => {
+const MileStones = ({ taskData = [] }) => {
     const stages = [
         [
             { index: 1, type: "completed" },
@@ -37,7 +37,9 @@ const MileStones = () => {
             { index: 12, type: "upcoming" },
         ],
     ]
-    return [1, 2, 3].map((milestone, id) => <MileStone stage={stages[id]} key={id}/>)
+    return taskData.map((milestone, id) => (
+        <MileStone milestone={milestone} stage={stages[id] || []} key={id} />
+    ))
 }
 
 export default MileStones

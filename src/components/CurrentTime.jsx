@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useMemo, useState } from "react"
 import {
     Navbar,
     Container,
@@ -10,10 +10,57 @@ import {
     Card,
 } from "react-bootstrap"
 import { measurments, colors } from "../config"
+import moment from "moment"
 
 const times = ["EST Time", "CST Time", "IST Time"]
 
-const CurrentTime = ({ data, selectedDate, taskData }) => {
+const CurrentTime = ({
+    duration = "4hrs 20mins",
+    jobRun = "02/22/2022 2:30",
+    data,
+    selectedDate,
+    taskData,
+}) => {
+    const expectedCompletion = useMemo(() => {
+        const duration = data[selectedDate]?.["Total duration(expected)"]
+        const runTime = moment(
+            data[selectedDate]?.["Run time"],
+            "MM/DD/YYYY h.mm A"
+        )
+        const arr = duration.trim().split(" ")
+        const obj = {}
+        for (let i = 0; i < arr.length; i += 2) {
+            if (arr[i + 1] === "hrs") {
+                runTime.add(Number(arr[i]), "hours")
+            } else if (arr[i + 1] === "mins") {
+                runTime.add(Number(arr[i]), "minutes")
+            }
+        }
+        // arr.map((val, id) => {
+        //     obj[val.replace(/[0-9]/g, "")] = val.match(/\d/g).join("")
+        // })
+        return runTime.format("MM/DD/YYYY h.mm A")
+    }, [selectedDate])
+    // const [time, setTime] = useState({
+    //     hrs: "",
+    //     mins: "",
+    // })
+    // console.log(arr[0].replace(/[0-9]/g, "") == "hrs")
+    // useEffect(() => {
+    //     setTime(obj)
+    // }, [])
+
+    // const newDate = moment(jobRun).format('YYYY-MM-DDTHH:mm')
+
+    // const dateNOW = new Date(
+    //     parseInt(moment(jobRun).format("YYYY")),
+    //     parseInt(moment(jobRun).format("MM")),
+    //     parseInt(moment(jobRun).format("DD")),
+    //     parseInt(moment(jobRun).format("HH")) + parseInt(time?.hrs),
+    //     parseInt(moment(jobRun).format("mm")) + parseInt(time?.mins)
+    // )
+    // console.log(dateNOW)
+
     return (
         <Container
             fluid
@@ -102,9 +149,7 @@ const CurrentTime = ({ data, selectedDate, taskData }) => {
                         </Col>
                         <Col>
                             <Row>
-                                <h5>
-                                    02/22/2022 <br /> 6:50 AM EST
-                                </h5>
+                                <h5>{expectedCompletion} EST</h5>
                             </Row>
                         </Col>
                         <Col>
@@ -120,7 +165,9 @@ const CurrentTime = ({ data, selectedDate, taskData }) => {
                         </Col>
                         <Col>
                             <Row>
-                                <h5>{taskData.length}</h5>
+                                <h5>
+                                    {data[selectedDate]?.["number of taks"]}
+                                </h5>
                             </Row>
                         </Col>
                     </Row>

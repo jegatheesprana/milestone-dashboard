@@ -29,13 +29,13 @@ const Stepper = ({ stage }) => {
             </div>
 
             <div className="d-flex justify-content-between">
-                {stage.map(({ index, type }) => {
+                {stage.map(({ index, type }, id) => {
                     return (
                         <div
                             className="progress-container"
-                            key={index}
+                            key={id}
                             style={{
-                                backgroundColor: `${colors.milestoneColor[type]}`,
+                                backgroundColor: `${colors.status[type]}`,
                             }}
                         ></div>
                     )

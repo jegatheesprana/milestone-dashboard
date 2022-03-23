@@ -1,7 +1,7 @@
 import { Card, Container } from "react-bootstrap"
 import styles from "./status.module.css"
 
-const Status = ({ title, bg }) => {
+const Status = ({ title, tasks, bg }) => {
     return (
         <Card style={{ backgroundColor: bg }}>
             <Card.Body>
@@ -32,7 +32,7 @@ const Status = ({ title, bg }) => {
                     </svg>
                 </div>
                 <h5>{title}</h5>
-                <div className={styles.taskCont}>4 Tasks</div>
+                <div className={styles.taskCont}>{tasks} Tasks</div>
             </Card.Body>
         </Card>
     )

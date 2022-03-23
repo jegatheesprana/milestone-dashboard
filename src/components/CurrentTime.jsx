@@ -120,7 +120,9 @@ const CurrentTime = ({ data, selectedDate, taskData }) => {
                         </Col>
                         <Col>
                             <Row>
-                                <h5>{taskData.length}</h5>
+                                <h5>
+                                    {data[selectedDate]?.["number of taks"]}
+                                </h5>
                             </Row>
                         </Col>
                     </Row>

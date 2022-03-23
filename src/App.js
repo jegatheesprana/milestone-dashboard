@@ -9,7 +9,7 @@ import csv from './data/runtype.csv'
 
 function App() {
     const [data, setData] = useState()
-    const [selectedDate, setSelectedDate] = useState(0)
+    const [selectedDate, setSelectedDate] = useState(1)
     const [taskData, setTaskData] = useState()
     const [loading, setLoading] = useState(true)
 

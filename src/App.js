@@ -4,7 +4,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import './App.css';
 import { Container } from 'react-bootstrap';
 import { Header, CurrentTime, TaskStatus, MileStones } from './components';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import csv from './data/runtype.csv'
 
 function App() {
@@ -27,23 +27,45 @@ function App() {
                     }, {});
                 });
                 setData(converted)
-                setLoading(false)
             })
     }, [])
 
     useEffect(() => {
-        if (!selectedDate) return
-        setLoading(true)
-        const filename =
-            import(`./data/${data[selectedDate]['Json output']}`).then(data => {
-                console.log(data.default)
-                setTaskData(data.default)
-                setLoading(false)
-            }).catch(e => {
-                console.log(e)
-                setLoading(false)
-            })
-    }, [selectedDate])
+        if (!data) return
+        import(`./data/${data[selectedDate]['Json output']}`).then(data => {
+            console.log(data.default)
+            setTaskData(data.default)
+            setLoading(false)
+        }).catch(e => {
+            console.log(e)
+            setLoading(false)
+        })
+    }, [selectedDate, data])
+
+    const taskObject = useMemo(() => {
+        if (!taskData) return {}
+        const milestoneGroup = {}
+        const statusCount = {
+            completed: 0,
+            longRunning: 0,
+            upcoming: 0,
+            warning: 0
+        }
+        for (let i = 0; i < taskData.length; i++) {
+            obj[taskData[i].Milestone] = taskData[i]
+            switch (taskData[i].status) {
+                case 'Success':
+                    break;
+                case 'Warning':
+                    break;
+
+                case "Suspended":
+                    break;
+                case "Running":
+                    break;
+            }
+        }
+    }, [taskData])
 
     if (loading) return null
     return (

@@ -5,3 +5,14 @@
 	border-radius: 12px;
 	margin-top: -19px;
 }
+
+
+/* 
+.dropdown-toggle::before {
+	display: none !important; 
+  }
+
+.dropdown-toggle::after{
+	display: none !important; 
+} */
+

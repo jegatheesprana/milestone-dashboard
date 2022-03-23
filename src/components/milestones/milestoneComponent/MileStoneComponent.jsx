@@ -3,7 +3,7 @@ import { colors, measurments } from "../../../config"
 import Detail from "./Detail"
 import Stepper from "./Stepper"
 
-const MileStoneComponent = ({stage}) => {
+const MileStoneComponent = ({ milestone, stage }) => {
     return (
         <Card
             bg="dark"
@@ -13,31 +13,41 @@ const MileStoneComponent = ({stage}) => {
                 <Row className="d-flex justify-content-between">
                     <Col xs={10}>
                         <Row>
-                            <Col  sm={4}>
-                                <h4>Milestone 1</h4>
-                                <p>Avg time - 1hr 40 Mins</p>
+                            <Col sm={4}>
+                                <h4>{milestone.data["Milestone"]}</h4>
+                                <p>
+                                    Avg time -{" "}
+                                    {Math.floor(milestone.avgTime / 60)}hr{" "}
+                                    {milestone.avgTime % 60} Mins
+                                </p>
                                 <h4 style={{ color: colors.milestone.font }}>
-                                    Anaplan Spoke to Admin
+                                    {milestone.data["Job Name"]}
                                 </h4>
                             </Col>
                             <Col sm={8}>
                                 <Row>
                                     <Col sm={3} style={{ minHeight: 80 }}>
-                                        <Detail title="Total Tasks" amount="11" />
+                                        <Detail
+                                            title="Total Tasks"
+                                            amount={milestone.count.total}
+                                        />
                                     </Col>
                                     <Col sm={3} style={{ minHeight: 80 }}>
-                                        <Detail title="Completed" amount="11" />
+                                        <Detail
+                                            title="Completed"
+                                            amount={milestone.count.completed}
+                                        />
                                     </Col>
                                     <Col sm={3} style={{ minHeight: 80 }}>
                                         <Detail
                                             title="In Process/Upcoming"
-                                            amount="11"
+                                            amount={milestone.count.upcoming}
                                         />
                                     </Col>
                                     <Col sm={3} style={{ minHeight: 80 }}>
                                         <Detail
                                             title="Warnings/Long Running"
-                                            amount="11"
+                                            amount={milestone.count.warning}
                                         />
                                     </Col>
                                 </Row>
@@ -49,7 +59,7 @@ const MileStoneComponent = ({stage}) => {
                     </Col>
                 </Row>
                 <Row>
-                    <Stepper stage={stage}/>
+                    <Stepper stage={milestone.tasks} />
                 </Row>
             </Card.Body>
         </Card>

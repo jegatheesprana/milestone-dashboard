@@ -70,6 +70,7 @@ const Header = ({ data, selectedDate, setSelectedDate }) => {
                                 <Dropdown.Item
                                     key={id}
                                     onClick={() => handleClick(id)}
+                                    active={selectedDate === id}
                                 >
                                     {data["Run time"]}
                                 </Dropdown.Item>

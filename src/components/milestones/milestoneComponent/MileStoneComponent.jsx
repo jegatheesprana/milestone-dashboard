@@ -15,7 +15,7 @@ import Detail from "./Detail"
 import Stepper from "./Stepper"
 import { useRef, useState } from "react"
 
-const MileStoneComponent = ({ milestone, stage }) => {
+const MileStoneComponent = ({ milestone, id, description }) => {
     const [show, setShow] = useState(false)
     const [target, setTarget] = useState(null)
     const ref = useRef(null)
@@ -35,14 +35,14 @@ const MileStoneComponent = ({ milestone, stage }) => {
                     <Col xs={10}>
                         <Row>
                             <Col sm={4}>
-                                <h4>{milestone.data["Milestone"]}</h4>
+                                <h4>{`Milestone ${id + 1}`}</h4>
                                 <p>
                                     Avg time -{" "}
                                     {Math.floor(milestone.avgTime / 60)}hr{" "}
                                     {milestone.avgTime % 60} Mins
                                 </p>
                                 <h4 style={{ color: colors.milestone.font }}>
-                                    {milestone.data["Job Name"]}
+                                    {milestone.data["Milestone"]}
                                 </h4>
                             </Col>
                             <Col sm={8}>
@@ -125,9 +125,7 @@ const MileStoneComponent = ({ milestone, stage }) => {
                                 <Popover id="popover-contained">
                                     {/* <Popover.Header as="h3"  >Popover bottom</Popover.Header> */}
                                     <Popover.Body>
-                                        <strong>
-                                            {milestone.data["Job Folder Name"]}
-                                        </strong>
+                                        <strong>{description}</strong>
                                     </Popover.Body>
                                 </Popover>
                             </Overlay>

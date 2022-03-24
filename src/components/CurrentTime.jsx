@@ -2,16 +2,36 @@ import React, { useMemo, useState } from "react"
 import { Container, Row, Col, Card } from "react-bootstrap"
 import { measurments, colors } from "../config"
 import moment from "moment"
+import momentTimezone from "moment-timezone"
 
-const times = ["EST Time", "CST Time", "IST Time"]
+const times = ["EST", "CST", "IST"]
 
-const CurrentTime = ({
-    duration = "4hrs 20mins",
-    jobRun = "02/22/2022 2:30",
-    data,
-    selectedDate,
-    taskData,
-}) => {
+const CurrentTime = ({ data, selectedDate }) => {
+    const [timezone, setTimezone] = useState("EST")
+
+    const handleClick = (zone) => {
+        setTimezone(zone)
+    }
+
+    const upcomming = useMemo(() => {
+        const stringDate = data[selectedDate + 1]?.["Run time"]
+        switch (timezone) {
+            case "EST":
+                return stringDate
+            case "CST":
+                console.log(stringDate, timezone)
+                return momentTimezone
+                    .tz(stringDate, "MM/DD/YYYY h.mm A", "America/New_York")
+                    .tz("America/Chicago")
+                    .format("MM/DD/YYYY h.mm A")
+            case "IST":
+                return momentTimezone
+                    .tz(stringDate, "MM/DD/YYYY h.mm A", "America/New_York")
+                    .tz("Asia/Kolkata")
+                    .format("MM/DD/YYYY h.mm A")
+        }
+    }, [selectedDate, timezone])
+
     const expectedCompletion = useMemo(() => {
         const duration = data[selectedDate]?.["Total duration(expected)"]
         const runTime = moment(
@@ -27,30 +47,23 @@ const CurrentTime = ({
                 runTime.add(Number(arr[i]), "minutes")
             }
         }
-        // arr.map((val, id) => {
-        //     obj[val.replace(/[0-9]/g, "")] = val.match(/\d/g).join("")
-        // })
-        return runTime.format("MM/DD/YYYY h.mm A")
-    }, [selectedDate])
-    // const [time, setTime] = useState({
-    //     hrs: "",
-    //     mins: "",
-    // })
-    // console.log(arr[0].replace(/[0-9]/g, "") == "hrs")
-    // useEffect(() => {
-    //     setTime(obj)
-    // }, [])
-
-    // const newDate = moment(jobRun).format('YYYY-MM-DDTHH:mm')
-
-    // const dateNOW = new Date(
-    //     parseInt(moment(jobRun).format("YYYY")),
-    //     parseInt(moment(jobRun).format("MM")),
-    //     parseInt(moment(jobRun).format("DD")),
-    //     parseInt(moment(jobRun).format("HH")) + parseInt(time?.hrs),
-    //     parseInt(moment(jobRun).format("mm")) + parseInt(time?.mins)
-    // )
-    // console.log(dateNOW)
+        const stringDate = runTime.format("MM/DD/YYYY h.mm A")
+        switch (timezone) {
+            case "EST":
+                return stringDate
+            case "CST":
+                console.log(stringDate, timezone)
+                return momentTimezone
+                    .tz(stringDate, "MM/DD/YYYY h.mm A", "America/New_York")
+                    .tz("America/Chicago")
+                    .format("MM/DD/YYYY h.mm A")
+            case "IST":
+                return momentTimezone
+                    .tz(stringDate, "MM/DD/YYYY h.mm A", "America/New_York")
+                    .tz("Asia/Kolkata")
+                    .format("MM/DD/YYYY h.mm A")
+        }
+    }, [selectedDate, timezone])
 
     return (
         <Card
@@ -62,6 +75,10 @@ const CurrentTime = ({
                     <Col>
                         <h6>Current Time</h6>
                         {times.map((val, id) => {
+                            const border =
+                                val === timezone
+                                    ? { border: "2px solid red" }
+                                    : {}
                             return (
                                 <Row className="px-4 mb-2" key={id}>
                                     <Col lg="5">
@@ -70,12 +87,15 @@ const CurrentTime = ({
                                                 width: "5rem",
                                                 height: "2.5rem",
                                                 backgroundColor: "#c4c4c4",
+                                                cursor: "pointer",
+                                                ...border,
                                             }}
+                                            onClick={() => handleClick(val)}
                                         ></Card>
                                     </Col>
                                     <Col lg="7" className="mt-1">
                                         <span className="align-middle">
-                                            {val}
+                                            {`${val} Time`}
                                         </span>
                                     </Col>
                                 </Row>
@@ -137,14 +157,15 @@ const CurrentTime = ({
                             <Col>
                                 <Row>
                                     <h5>
-                                        {data[selectedDate + 1]?.["Run time"]}{" "}
-                                        EST
+                                        {upcomming} {timezone}
                                     </h5>
                                 </Row>
                             </Col>
                             <Col>
                                 <Row>
-                                    <h5>{expectedCompletion} EST</h5>
+                                    <h5>
+                                        {expectedCompletion} {timezone}
+                                    </h5>
                                 </Row>
                             </Col>
                             <Col>

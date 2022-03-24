@@ -1,0 +1,7 @@
+Milestone,Description
+Data to Admin,The tasks listed in this milestone will move the data from Spoke models into the Anaplan Admin model
+Interspoke refresh,The tasks listed in this milestone will move the data with the Anaplan Spoke models
+Admin to DH,"The tasks listed in this milestone will move the data from Anaplan Admin model into the DataHub
+Post completion of all the jobs within this milestone the data will be avaiable in Analysis for Office(AfO) reporting"
+IBP Jobs,"These are IBP specific jobs, will move the data from IBP spoke to Admin & back to spoke models"
+Master data Jobs,The master data jobs will extract the data from Datahub to Anaplan Admin

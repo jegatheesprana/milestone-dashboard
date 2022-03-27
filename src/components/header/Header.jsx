@@ -8,8 +8,10 @@ import {
     Dropdown,
     Button,
 } from "react-bootstrap"
-import { colors } from "../config"
-import headerImage from "../assests/headerImage.png"
+import { colors } from "../../config"
+import headerImage from "../../assests/headerImage.png"
+import Calendar from "./Calendar"
+import moment from "moment"
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <Button
@@ -66,7 +68,7 @@ const Header = ({ data, selectedDate, setSelectedDate }) => {
                             id="dropdown-custom-components"
                         />
                         <Dropdown.Menu>
-                            {data.map((data, id) => (
+                            {/* {data.map((data, id) => (
                                 <Dropdown.Item
                                     key={id}
                                     onClick={() => handleClick(id)}
@@ -74,7 +76,8 @@ const Header = ({ data, selectedDate, setSelectedDate }) => {
                                 >
                                     {data["Run time"]}
                                 </Dropdown.Item>
-                            ))}
+                            ))} */}
+                            <Calendar events={data} handleClick={handleClick} />
                         </Dropdown.Menu>
                     </Dropdown>
                 </Col>

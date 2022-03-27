@@ -5,7 +5,7 @@ import TaskStatusModal from "./TaskStatusModal"
 import { useState } from "react"
 
 const TaskStatus = ({ count, taskData }) => {
-    const [status, setStatus] = useState("")
+    const [status, setStatus] = useState([])
     const [statusModal, setStatusModal] = useState(false)
 
     const handleClose = () => {
@@ -17,7 +17,8 @@ const TaskStatus = ({ count, taskData }) => {
             const tasks = cur.tasks.filter((task) => task.type === status)
             return [...acc, ...tasks]
         }, [])
-        setStatus(filtered)
+        console.log(filtered)
+        setStatus(filtered || [])
         setStatusModal(true)
     }
 

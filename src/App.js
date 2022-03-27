@@ -7,6 +7,7 @@ import { Header, CurrentTime, TaskStatus, MileStones } from './components';
 import { useEffect, useState, useMemo } from 'react';
 import csv from './data/runtype.csv'
 import description from './data/milestone description.csv'
+import moment from 'moment'
 
 function csvToJson(data) {
     const lines = data.split('\r\n');
@@ -28,8 +29,8 @@ function csvToArray(data) {
 }
 
 function App() {
-    const [data, setData] = useState()
-    const [selectedDate, setSelectedDate] = useState(0)
+    const [data, setData] = useState([])
+    const [selectedDate, setSelectedDate] = useState(null)
     const [taskData, setTaskData] = useState()
     const [milestoneDes, setMilestoneDes] = useState({})
     const [loading, setLoading] = useState(true)
@@ -40,7 +41,10 @@ function App() {
             .then(data => {
                 const converted = csvToJson(data);
                 converted.sort((a, b) => {
-                    if (a > b) return -1
+                    const timeA = moment(a["Run time"], "MM/DD/YYYY h.mm A")
+                    const timeB = moment(b["Run time"], "MM/DD/YYYY h.mm A")
+                    const diff = timeA.diff(timeB, 'minutes')
+                    if (diff < 0) return -1
                     else return 1
                 })
                 setData(converted)
@@ -56,7 +60,7 @@ function App() {
     }, [])
 
     useEffect(() => {
-        if (!data) return
+        if (!data || selectedDate === null) return
         setLoading(true)
         Promise.all([import(`./data/jsons/${data[selectedDate]['Json output']}`), import(`./data/csvs/${data[selectedDate]['CSV file']}`)]).then(async ([{ default: taskData }, csvPath]) => {
             const csvData = await fetch(csvPath.default).then(res => res.text()).catch(console.log)
@@ -138,7 +142,7 @@ function App() {
                 return acc
             }, {})
 
-            console.log(converted, jsonReduced)
+            // console.log(converted, jsonReduced)
 
             Object.keys(converted).forEach(key => {
                 const acc = converted
@@ -172,14 +176,14 @@ function App() {
                 })
             })
 
-            console.log(converted)
+            // console.log(converted)
 
             const taskDataArray = Object.keys(converted).map(key => {
                 const obj = converted[key]
                 if (obj.count.pending) {
-                    console.log("match")
+                    // console.log("match")
                     obj.count.upcoming = 1
-                    console.log(obj.tasks.find(task => task["Pending"]))
+                    // console.log(obj.tasks.find(task => task["Pending"]))
                     obj.tasks.find(task => task["Pending"]).type = 'upcoming'
                 }
                 return obj
@@ -213,14 +217,18 @@ function App() {
         return statusCount
     }, [taskData])
 
-    if (loading) return null
+    // if (loading) return null
     return (
         <Container className="my-3">
             <Header data={data} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-            <CurrentTime data={data} selectedDate={selectedDate} taskData={taskData} />
-            <TaskStatus count={count} />
-            <MileStones taskData={taskData} milestoneDes={milestoneDes} />
-        </Container>
+            {!loading && (selectedDate !== null) &&
+                <>
+                    <CurrentTime data={data} selectedDate={selectedDate} taskData={taskData} />
+                    <TaskStatus count={count} />
+                    <MileStones taskData={taskData} milestoneDes={milestoneDes} />
+                </>
+            }
+        </Container >
     );
 }
 

@@ -67,7 +67,6 @@ const CurrentTime = ({ data, selectedDate }) => {
 
     return (
         <Card
-            fluid
             className={`mt-${measurments.componentSpacing} py-2 bg-dark text-white`}
         >
             <Card.Body>

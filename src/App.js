@@ -224,7 +224,7 @@ function App() {
             {!loading && (selectedDate !== null) &&
                 <>
                     <CurrentTime data={data} selectedDate={selectedDate} taskData={taskData} />
-                    <TaskStatus count={count} />
+                    <TaskStatus taskData={taskData} count={count} />
                     <MileStones taskData={taskData} milestoneDes={milestoneDes} />
                 </>
             }

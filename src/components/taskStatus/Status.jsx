@@ -1,9 +1,12 @@
 import { Card, Container } from "react-bootstrap"
 import styles from "./status.module.css"
 
-const Status = ({ title, tasks, bg }) => {
+const Status = ({ title, tasks, bg, onClick }) => {
     return (
-        <Card style={{ backgroundColor: bg }}>
+        <Card
+            style={{ backgroundColor: bg, cursor: "pointer" }}
+            onClick={onClick}
+        >
             <Card.Body>
                 <div className={styles.roundCont}>
                     <svg

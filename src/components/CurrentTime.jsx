@@ -4,7 +4,7 @@ import { measurments, colors } from "../config"
 import moment from "moment"
 import momentTimezone from "moment-timezone"
 
-const times = ["EST", "CST", "IST"]
+const times = ["EST", "CST", "IST", "SGT"]
 
 const CurrentTime = ({ data, selectedDate }) => {
     const [timezone, setTimezone] = useState("EST")
@@ -13,13 +13,11 @@ const CurrentTime = ({ data, selectedDate }) => {
         setTimezone(zone)
     }
 
-    const upcomming = useMemo(() => {
-        const stringDate = data[selectedDate + 1]?.["Run time"]
+    const getTime = (stringDate) => {
         switch (timezone) {
             case "EST":
                 return stringDate
             case "CST":
-                console.log(stringDate, timezone)
                 return momentTimezone
                     .tz(stringDate, "MM/DD/YYYY h.mm A", "America/New_York")
                     .tz("America/Chicago")
@@ -29,7 +27,17 @@ const CurrentTime = ({ data, selectedDate }) => {
                     .tz(stringDate, "MM/DD/YYYY h.mm A", "America/New_York")
                     .tz("Asia/Kolkata")
                     .format("MM/DD/YYYY h.mm A")
+            case "SGT":
+                return momentTimezone
+                    .tz(stringDate, "MM/DD/YYYY h.mm A", "America/New_York")
+                    .tz("Singapore")
+                    .format("MM/DD/YYYY h.mm A")
         }
+    }
+
+    const upcomming = useMemo(() => {
+        const stringDate = data[selectedDate + 0]?.["Run time"]
+        return getTime(stringDate)
     }, [selectedDate, timezone])
 
     const expectedCompletion = useMemo(() => {
@@ -48,21 +56,7 @@ const CurrentTime = ({ data, selectedDate }) => {
             }
         }
         const stringDate = runTime.format("MM/DD/YYYY h.mm A")
-        switch (timezone) {
-            case "EST":
-                return stringDate
-            case "CST":
-                console.log(stringDate, timezone)
-                return momentTimezone
-                    .tz(stringDate, "MM/DD/YYYY h.mm A", "America/New_York")
-                    .tz("America/Chicago")
-                    .format("MM/DD/YYYY h.mm A")
-            case "IST":
-                return momentTimezone
-                    .tz(stringDate, "MM/DD/YYYY h.mm A", "America/New_York")
-                    .tz("Asia/Kolkata")
-                    .format("MM/DD/YYYY h.mm A")
-        }
+        return getTime(stringDate)
     }, [selectedDate, timezone])
 
     return (

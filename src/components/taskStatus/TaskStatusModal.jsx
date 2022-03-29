@@ -8,7 +8,7 @@ const TaskStatusModal = ({
     getTime,
 }) => {
     return (
-        <Modal show={show} onHide={handleClose} centered fullscreen>
+        <Modal show={show} onHide={handleClose} centered size="xl">
             <Modal.Header closeButton>
                 <Modal.Title>Status Detail</Modal.Title>
             </Modal.Header>
@@ -20,18 +20,14 @@ const TaskStatusModal = ({
                                 <th></th>
                                 <th>Run Date ({timezone})</th>
                                 <th>Run time ({timezone})</th>
-                                <th>Job Folder Name</th>
                                 <th>Job Name</th>
                                 <th>Milestone</th>
                                 <th>Taskflow</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
-                                <th>Status</th>
+                                <th className="px-5">Start Time</th>
+                                <th className="px-5">End Time</th>
                                 <th>SubTasks</th>
-                                <th>Average Time</th>
                                 <th>Run Time</th>
                                 <th>Rows Processed</th>
-                                <th>Long Running</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,18 +36,14 @@ const TaskStatusModal = ({
                                     <td>{id + 1}</td>
                                     <td>{task["Run Date"]}</td>
                                     <td>{task["Run time"]}</td>
-                                    <td>{task["Job Folder Name"]}</td>
                                     <td>{task["Job Name"]}</td>
                                     <td>{task["Milestone"]}</td>
                                     <td>{task["Taskflow"]}</td>
                                     <td>{task["Start Time"]}</td>
                                     <td>{task["End Time"]}</td>
-                                    <td>{task["Status"]}</td>
                                     <td>{task["SubTasks"]}</td>
-                                    <td>{task["Average Time"]}</td>
                                     <td>{task["Run Time"]}</td>
                                     <td>{task["Rows Processed"]}</td>
-                                    <td>{task["Long Running"]}</td>
                                 </tr>
                             ))}
                         </tbody>

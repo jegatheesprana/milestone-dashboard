@@ -2,7 +2,7 @@ import { Modal, Button, Table, Container } from "react-bootstrap"
 
 const SubTask = ({ show, handleClose, subTask = {}, timezone }) => {
     return (
-        <Modal show={show} onHide={handleClose} centered fullscreen>
+        <Modal show={show} onHide={handleClose} centered size="xl">
             <Modal.Header closeButton>
                 <Modal.Title>Sub Task Detail</Modal.Title>
             </Modal.Header>

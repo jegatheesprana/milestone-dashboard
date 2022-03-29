@@ -3,7 +3,7 @@ import SubTask from "./SubTask"
 import { colors } from "../../../config"
 import { useState } from "react"
 
-const Stepper = ({ stage }) => {
+const Stepper = ({ stage, timezone }) => {
     const [subTaskModal, setSubTaskModal] = useState(false)
     const [subTask, setSubTask] = useState()
 
@@ -61,6 +61,7 @@ const Stepper = ({ stage }) => {
                 show={subTaskModal}
                 handleClose={handleClose}
                 subTask={subTask}
+                timezone={timezone}
             />
         </div>
     )

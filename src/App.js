@@ -8,24 +8,34 @@ import { useEffect, useState, useMemo } from 'react';
 import csv from './data/runtype.csv'
 import description from './data/milestone description.csv'
 import moment from 'moment'
+import momentTimezone from "moment-timezone"
+import Papa from 'papaparse'
 
-function csvToJson(data) {
-    const lines = data.split('\r\n');
-    const keys = lines[0].split(',');
-    return lines.slice(1).map(line => {
-        return line.split(',').reduce((acc, cur, i) => {
+const times = ["EST", "CST", "IST", "SGT"]
+
+function csvToJson(data, limit) {
+    const lines = Papa.parse(data).data;
+    const keys = lines[0];
+    return lines.slice(1, lines.length - 1).map(line => {
+        let arr = line
+        // if (limit) {
+        //     arr = arr.slice(0, limit).concat(arr.slice(limit).join(", "));
+        // }
+        return arr.reduce((acc, cur, i) => {
             const toAdd = {};
             toAdd[keys[i]] = cur;
             return { ...acc, ...toAdd };
         }, {});
-    }).slice(0, lines.length - 1);
+    }).slice(0);
 }
 
 function csvToArray(data) {
-    const lines = data.split('\r\n');
-    return lines.map(line => {
-        return line.split(',')
-    }).slice(0, lines.length - 1);
+    // const lines = data.split('\r\n');
+    // return lines.map(line => {
+    //     return line.split(',')
+    // }).slice(0, lines.length - 1);
+    const lines = Papa.parse(data).data
+    return lines.slice(0, lines.length - 1);
 }
 
 function App() {
@@ -34,6 +44,29 @@ function App() {
     const [taskData, setTaskData] = useState()
     const [milestoneDes, setMilestoneDes] = useState({})
     const [loading, setLoading] = useState(true)
+    const [timezone, setTimezone] = useState("EST")
+
+    const getTime = (stringDate, format = "MM/DD/YYYY h.mm A") => {
+        switch (timezone) {
+            case "EST":
+                return stringDate
+            case "CST":
+                return momentTimezone
+                    .tz(stringDate, format, "America/New_York")
+                    .tz("America/Chicago")
+                    .format(format)
+            case "IST":
+                return momentTimezone
+                    .tz(stringDate, format, "America/New_York")
+                    .tz("Asia/Kolkata")
+                    .format(format)
+            case "SGT":
+                return momentTimezone
+                    .tz(stringDate, format, "America/New_York")
+                    .tz("Singapore")
+                    .format(format)
+        }
+    }
 
     useEffect(() => {
         fetch(csv)
@@ -48,9 +81,10 @@ function App() {
                     else return 1
                 })
                 setData(converted)
+                setSelectedDate(0)
                 fetch(description).then(res => res.text())
                     .then(data => {
-                        const converted = csvToJson(data).reduce((acc, cur) => {
+                        const converted = csvToJson(data, 1).reduce((acc, cur) => {
                             acc[cur["Milestone"]] = cur["Description"]
                             return acc
                         }, {})
@@ -65,17 +99,7 @@ function App() {
         Promise.all([import(`./data/jsons/${data[selectedDate]['Json output']}`), import(`./data/csvs/${data[selectedDate]['CSV file']}`)]).then(async ([{ default: taskData }, csvPath]) => {
             const csvData = await fetch(csvPath.default).then(res => res.text()).catch(console.log)
             const converted = csvToArray(csvData)
-                // .map((row, id) => {
-                //     const obj = {
-                //         "Job Folder Name": row[0],
-                //         "Job Name": row[1],
-                //         "Milestone": row[2],
-                //         "Taskflow": row[3],
-                //         "Pending": !taskData[id]
-                //     }
-                //     const taskObj = taskData[id] || {}
-                //     return { ...taskObj, ...obj }
-                // })
+
                 .reduce((acc, cur, i) => {
                     const milestone = cur[2]
                     if (!acc[milestone]) acc[milestone] = {
@@ -92,46 +116,6 @@ function App() {
 
                     return acc
                 }, {});
-            // .reduce((acc, cur, i) => {
-            //     const milestone = cur["Milestone"]
-            //     if (!acc[milestone]) acc[milestone] = {
-            //         tasks: [], avgTime: 0, count: { total: 0, completed: 0, longRunning: 0, upcoming: 0, warning: 0, pending: 0 }, data: {
-            //             "Job Folder Name": cur["Job Folder Name"],
-            //             "Job Name": cur["Job Name"],
-            //             "Milestone": cur["Milestone"],
-            //             "Taskflow": cur["Taskflow"],
-            //         }
-            //     }
-
-            //     let type = ""
-
-            //     if (!cur["Pending"]) {
-            //         acc[milestone].avgTime += cur["Run Time"]
-            //         if (cur["Long Running"] === "Y") {
-            //             type = "longRunning"
-            //             acc[milestone].count.longRunning += 1;
-            //         } else {
-            //             if (cur["Status"] === "Success") {
-            //                 type = "completed"
-            //                 acc[milestone].count.completed += 1;
-            //             } else {
-            //                 type = "warning"
-            //                 acc[milestone].count.warning += 1;
-            //             }
-            //         }
-            //     } else {
-            //         acc[milestone].count.pending += 1;
-            //         type = 'pending'
-            //     }
-
-            //     cur.type = type
-
-            //     acc[milestone].tasks.push(cur)
-            //     acc[milestone].count.total += 1;
-
-            //     return acc
-            // }, {});
-
 
             const jsonReduced = taskData.reduce((acc, cur, i) => {
                 const milestone = cur["Milestone"]
@@ -188,6 +172,22 @@ function App() {
                 }
                 return obj
             })
+
+            taskDataArray.forEach((taskData, dataId) => {
+                taskData.tasks.forEach((task, taskId) => {
+                    let pointer = taskDataArray[dataId].tasks[taskId]
+                    pointer.concatedTime = `${task["Run Date"]} ${task["Run time"]}`
+                    const converted = getTime(
+                        `${task["Run Date"]} ${task["Run time"]}`,
+                        "DD/MM/YYYY HH:mm"
+                    ).split(" ")
+                    pointer["Run Date"] = converted[0]
+                    pointer["Run time"] = converted[1]
+                    pointer["Start Time"] = getTime(task["Start Time"], "MMM DD, YYYY, h:mm A")
+                    pointer["End Time"] = getTime(task["End Time"], "MMM DD, YYYY, h:mm A")
+                })
+            })
+
             setTaskData(taskDataArray)
             setLoading(false)
         })
@@ -198,6 +198,26 @@ function App() {
                 setTaskData([])
             })
     }, [selectedDate, data])
+
+    useEffect(() => {
+        if (!taskData) return
+        const dupTaskData = [...taskData]
+        dupTaskData.forEach((taskData, dataId) => {
+            taskData.tasks.forEach((task, taskId) => {
+                let pointer = dupTaskData[dataId].tasks[taskId]
+                pointer.concatedTime = `${task["Run Date"]} ${task["Run time"]}`
+                const converted = getTime(
+                    `${task["Run Date"]} ${task["Run time"]}`,
+                    "DD/MM/YYYY HH:mm"
+                ).split(" ")
+                pointer["Run Date"] = converted[0]
+                pointer["Run time"] = converted[1]
+                pointer["Start Time"] = getTime(task["Start Time"], "MMM DD, YYYY, h:mm A")
+                pointer["End Time"] = getTime(task["End Time"], "MMM DD, YYYY, h:mm A")
+            })
+        })
+        setTaskData(dupTaskData)
+    }, [timezone])
 
     const count = useMemo(() => {
 
@@ -223,9 +243,9 @@ function App() {
             <Header data={data} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
             {!loading && (selectedDate !== null) &&
                 <>
-                    <CurrentTime data={data} selectedDate={selectedDate} taskData={taskData} />
-                    <TaskStatus taskData={taskData} count={count} />
-                    <MileStones taskData={taskData} milestoneDes={milestoneDes} />
+                    <CurrentTime data={data} selectedDate={selectedDate} taskData={taskData} timezone={timezone} setTimezone={setTimezone} getTime={getTime} times={times} />
+                    <TaskStatus taskData={taskData} count={count} timezone={timezone} getTime={getTime} />
+                    <MileStones taskData={taskData} milestoneDes={milestoneDes} timezone={timezone} getTime={getTime} />
                 </>
             }
         </Container >

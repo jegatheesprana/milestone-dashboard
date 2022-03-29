@@ -2,42 +2,29 @@ import React, { useMemo, useState } from "react"
 import { Container, Row, Col, Card } from "react-bootstrap"
 import { measurments, colors } from "../config"
 import moment from "moment"
-import momentTimezone from "moment-timezone"
 
-const times = ["EST", "CST", "IST", "SGT"]
-
-const CurrentTime = ({ data, selectedDate }) => {
-    const [timezone, setTimezone] = useState("EST")
-
+const CurrentTime = ({
+    data,
+    selectedDate,
+    timezone,
+    setTimezone,
+    getTime,
+    times,
+}) => {
     const handleClick = (zone) => {
         setTimezone(zone)
     }
 
-    const getTime = (stringDate) => {
-        switch (timezone) {
-            case "EST":
-                return stringDate
-            case "CST":
-                return momentTimezone
-                    .tz(stringDate, "MM/DD/YYYY h.mm A", "America/New_York")
-                    .tz("America/Chicago")
-                    .format("MM/DD/YYYY h.mm A")
-            case "IST":
-                return momentTimezone
-                    .tz(stringDate, "MM/DD/YYYY h.mm A", "America/New_York")
-                    .tz("Asia/Kolkata")
-                    .format("MM/DD/YYYY h.mm A")
-            case "SGT":
-                return momentTimezone
-                    .tz(stringDate, "MM/DD/YYYY h.mm A", "America/New_York")
-                    .tz("Singapore")
-                    .format("MM/DD/YYYY h.mm A")
-        }
-    }
-
     const upcomming = useMemo(() => {
         const stringDate = data[selectedDate + 0]?.["Run time"]
-        return getTime(stringDate)
+        const converted = getTime(stringDate).split(" ")
+        return (
+            <>
+                {converted[0]}
+                <br />
+                {converted.slice(1, converted.length).join(" ")}
+            </>
+        )
     }, [selectedDate, timezone])
 
     const expectedCompletion = useMemo(() => {
@@ -56,7 +43,14 @@ const CurrentTime = ({ data, selectedDate }) => {
             }
         }
         const stringDate = runTime.format("MM/DD/YYYY h.mm A")
-        return getTime(stringDate)
+        const converted = getTime(stringDate).split(" ")
+        return (
+            <>
+                {converted[0]}
+                <br />
+                {converted.slice(1, converted.length).join(" ")}
+            </>
+        )
     }, [selectedDate, timezone])
 
     return (

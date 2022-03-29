@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import {
     Navbar,
     Container,
@@ -26,7 +26,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
             className="bi bi-calendar"
             style={{ color: colors.primaryGreen }}
         ></i>{" "}
-        Filter Date & Time{" "}
+        {children || "Filter Date & Time"}{" "}
         <i
             className="bi bi-caret-down-fill"
             style={{ color: colors.primaryGreen }}
@@ -34,10 +34,41 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     </Button>
 ))
 
-const Header = ({ data, selectedDate, setSelectedDate }) => {
+const Header = ({ data: notFiltered, selectedDate, setSelectedDate }) => {
+    const [selectedSector, setSelectedSector] = useState(0)
+    const [menuOpen, setMenuOpen] = useState(false)
+
+    // useEffect(() => {
+
+    // }, [data])
+
+    const sectors = useMemo(() => {
+        const arr = notFiltered?.map((data) => data["Sector"]) || []
+        const unique = [...new Set(arr)]
+        setSelectedSector(unique.length - 1)
+        return unique
+    }, [notFiltered])
+
     const handleClick = (date) => {
         setSelectedDate(date)
+        setMenuOpen(false)
     }
+
+    const handleSectorClick = (sector) => {
+        setSelectedSector(sector)
+    }
+
+    const handleToggle = (toggle) => {
+        setMenuOpen(toggle)
+    }
+
+    const data = useMemo(() => {
+        if (!selectedSector) return notFiltered
+        return notFiltered.filter(
+            (data) => data["Sector"] === sectors[selectedSector]
+        )
+    }, [notFiltered, selectedSector])
+
     return (
         <Container fluid className="py-2 bg-dark text-white">
             <Row>
@@ -62,11 +93,34 @@ const Header = ({ data, selectedDate, setSelectedDate }) => {
                     sm={4}
                     className="text-white d-flex align-items-center justify-content-end"
                 >
-                    <Dropdown>
+                    <Dropdown className="mx-1">
+                        <Dropdown.Toggle
+                            style={{
+                                backgroundColor: colors.bgGray,
+                                borderColor: colors.bgGray,
+                            }}
+                        >
+                            {sectors[selectedSector] || "Sector"}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {sectors.map((data, id) => (
+                                <Dropdown.Item
+                                    key={id}
+                                    onClick={() => handleSectorClick(id)}
+                                    active={selectedSector === id}
+                                >
+                                    {data}
+                                </Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Dropdown show={menuOpen} onToggle={handleToggle}>
                         <Dropdown.Toggle
                             as={CustomToggle}
                             id="dropdown-custom-components"
-                        />
+                        >
+                            {data[selectedDate]?.["Run time"]}
+                        </Dropdown.Toggle>
                         <Dropdown.Menu>
                             {/* {data.map((data, id) => (
                                 <Dropdown.Item

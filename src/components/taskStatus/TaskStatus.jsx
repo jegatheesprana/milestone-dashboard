@@ -4,7 +4,7 @@ import { colors, measurments } from "../../config"
 import TaskStatusModal from "./TaskStatusModal"
 import { useState } from "react"
 
-const TaskStatus = ({ count, taskData }) => {
+const TaskStatus = ({ count, taskData, timezone, getTime }) => {
     const [status, setStatus] = useState([])
     const [statusModal, setStatusModal] = useState(false)
 
@@ -62,6 +62,8 @@ const TaskStatus = ({ count, taskData }) => {
                 show={statusModal}
                 handleClose={handleClose}
                 tasks={status}
+                timezone={timezone}
+                getTime={getTime}
             />
         </>
     )

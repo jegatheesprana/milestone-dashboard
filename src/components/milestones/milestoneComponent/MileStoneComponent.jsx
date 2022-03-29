@@ -15,7 +15,7 @@ import Detail from "./Detail"
 import Stepper from "./Stepper"
 import { useRef, useState } from "react"
 
-const MileStoneComponent = ({ milestone, id, description }) => {
+const MileStoneComponent = ({ milestone, id, description, timezone }) => {
     const [show, setShow] = useState(false)
     const [target, setTarget] = useState(null)
     const ref = useRef(null)
@@ -76,36 +76,6 @@ const MileStoneComponent = ({ milestone, id, description }) => {
                         </Row>
                     </Col>
                     <Col xs={1} sm={1} className="pt-3 px-4 text-end">
-                        {/* <DropdownButton
-                            className="dropdown-toggle"
-                            id="dropdown-button-drop-start"
-                            drop="start"
-                            menuVariant="dark"
-                            title={<i className="bi bi-three-dots-vertical"></i>}
-                            variant="dark"
-                        >
-                           
-                            <Dropdown.Menu variant="dark">
-                                <Dropdown.Item eventKey="1">Action</Dropdown.Item>
-                            </Dropdown.Menu>
-                            
-                        </DropdownButton> */}
-
-                        {/* <OverlayTrigger
-                            placement="left"
-                            overlay={<Tooltip id="button-tooltip-2">Check out this avatar</Tooltip>}
-                        >
-                            {({ ref, ...triggerHandler }) => (
-                            <Button
-                                variant="dark"
-                                {...triggerHandler}
-                                className="d-inline-flex align-items-center"
-                            >
-                               <i className="bi bi-three-dots-vertical" ref={ref}></i>
-                            </Button>
-                            )}
-                        </OverlayTrigger> */}
-
                         <div ref={ref}>
                             <Button
                                 onFocus={handleClick}
@@ -122,7 +92,10 @@ const MileStoneComponent = ({ milestone, id, description }) => {
                                 container={ref}
                                 containerPadding={20}
                             >
-                                <Popover id="popover-contained">
+                                <Popover
+                                    id="popover-contained"
+                                    style={{ minWidth: 500 }}
+                                >
                                     {/* <Popover.Header as="h3"  >Popover bottom</Popover.Header> */}
                                     <Popover.Body>
                                         <strong>{description}</strong>
@@ -133,7 +106,7 @@ const MileStoneComponent = ({ milestone, id, description }) => {
                     </Col>
                 </Row>
                 <Row>
-                    <Stepper stage={milestone.tasks} />
+                    <Stepper stage={milestone.tasks} timezone={timezone} />
                 </Row>
             </Card.Body>
         </Card>

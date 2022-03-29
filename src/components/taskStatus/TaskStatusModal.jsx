@@ -12,9 +12,17 @@ const TaskStatusModal = ({
             <Modal.Header closeButton>
                 <Modal.Title>Status Detail</Modal.Title>
             </Modal.Header>
-            <Modal.Body style={{ maxWidth: "100%", overflow: "auto" }}>
-                <Container className="my-3">
-                    <Table striped bordered hover>
+            <Modal.Body>
+                <Container
+                    className="my-3"
+                    style={{ maxWidth: "100%", overflow: "auto" }}
+                >
+                    <Table
+                        striped
+                        bordered
+                        hover
+                        style={{ fontSize: "0.55rem" }}
+                    >
                         <thead>
                             <tr>
                                 <th></th>

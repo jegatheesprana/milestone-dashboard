@@ -63,10 +63,12 @@ const Header = ({ data: notFiltered, selectedDate, setSelectedDate }) => {
     }
 
     const data = useMemo(() => {
-        if (!selectedSector) return notFiltered
-        return notFiltered.filter(
+        if (selectedSector === null || !notFiltered) return notFiltered
+        const filtered = notFiltered.filter(
             (data) => data["Sector"] === sectors[selectedSector]
         )
+        filtered[0] && setSelectedDate(filtered[0].id)
+        return filtered
     }, [notFiltered, selectedSector])
 
     return (

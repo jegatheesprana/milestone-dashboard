@@ -79,9 +79,12 @@ function App() {
                     const diff = timeA.diff(timeB, 'minutes')
                     if (diff < 0) return -1
                     else return 1
+                }).map((data, id) => {
+                    data.id = id
+                    return data
                 })
                 setData(converted)
-                setSelectedDate(0)
+                // setSelectedDate(0)
                 fetch(description).then(res => res.text())
                     .then(data => {
                         const converted = csvToJson(data, 1).reduce((acc, cur) => {
@@ -96,6 +99,7 @@ function App() {
     useEffect(() => {
         if (!data || selectedDate === null) return
         setLoading(true)
+        console.log(`./data/jsons/${data[selectedDate]['Json output']}`)
         Promise.all([import(`./data/jsons/${data[selectedDate]['Json output']}`), import(`./data/csvs/${data[selectedDate]['CSV file']}`)]).then(async ([{ default: taskData }, csvPath]) => {
             const csvData = await fetch(csvPath.default).then(res => res.text()).catch(console.log)
             const converted = csvToArray(csvData)
@@ -131,7 +135,19 @@ function App() {
             Object.keys(converted).forEach(key => {
                 const acc = converted
                 converted[key].tasks = converted[key].tasks.map((task, id) => {
-                    const cur = { ...task, ...jsonReduced[key][id] }
+                    if (jsonReduced[key][id]) {
+                        var cur = { ...task, ...jsonReduced[key][id] }
+                    } else {
+                        var cur = {
+                            "Job Folder Name": task[0],
+                            "Job Name": task[1],
+                            "Milestone": task[2],
+                            "Taskflow": task[3],
+                            "Number of Sub tasks": task[4],
+                            "Average Run Time": task[5],
+                        }
+                    }
+
                     const milestone = task["Milestone"]
                     let type = ""
                     if (jsonReduced[key][id]) {
@@ -175,16 +191,18 @@ function App() {
 
             taskDataArray.forEach((taskData, dataId) => {
                 taskData.tasks.forEach((task, taskId) => {
-                    let pointer = taskDataArray[dataId].tasks[taskId]
-                    pointer.concatedTime = `${task["Run Date"]} ${task["Run time"]}`
-                    const converted = getTime(
-                        `${task["Run Date"]} ${task["Run time"]}`,
-                        "DD/MM/YYYY HH:mm"
-                    ).split(" ")
-                    pointer["Run Date"] = converted[0]
-                    pointer["Run time"] = converted[1]
-                    pointer["Start Time"] = getTime(task["Start Time"], "MMM DD, YYYY, h:mm A")
-                    pointer["End Time"] = getTime(task["End Time"], "MMM DD, YYYY, h:mm A")
+                    if (task["Run Date"]) {
+                        let pointer = taskDataArray[dataId].tasks[taskId]
+                        pointer.concatedTime = `${task["Run Date"]} ${task["Run time"]}`
+                        const converted = getTime(
+                            `${task["Run Date"]} ${task["Run time"]}`,
+                            "DD/MM/YYYY HH:mm"
+                        ).split(" ")
+                        pointer["Run Date"] = converted[0]
+                        pointer["Run time"] = converted[1]
+                        pointer["Start Time"] = getTime(task["Start Time"], "MMM DD, YYYY, h:mm A")
+                        pointer["End Time"] = getTime(task["End Time"], "MMM DD, YYYY, h:mm A")
+                    }
                 })
             })
 
@@ -204,16 +222,18 @@ function App() {
         const dupTaskData = [...taskData]
         dupTaskData.forEach((taskData, dataId) => {
             taskData.tasks.forEach((task, taskId) => {
-                let pointer = dupTaskData[dataId].tasks[taskId]
-                pointer.concatedTime = `${task["Run Date"]} ${task["Run time"]}`
-                const converted = getTime(
-                    `${task["Run Date"]} ${task["Run time"]}`,
-                    "DD/MM/YYYY HH:mm"
-                ).split(" ")
-                pointer["Run Date"] = converted[0]
-                pointer["Run time"] = converted[1]
-                pointer["Start Time"] = getTime(task["Start Time"], "MMM DD, YYYY, h:mm A")
-                pointer["End Time"] = getTime(task["End Time"], "MMM DD, YYYY, h:mm A")
+                if (task["Run Date"]) {
+                    let pointer = dupTaskData[dataId].tasks[taskId]
+                    pointer.concatedTime = `${task["Run Date"]} ${task["Run time"]}`
+                    const converted = getTime(
+                        `${task["Run Date"]} ${task["Run time"]}`,
+                        "DD/MM/YYYY HH:mm"
+                    ).split(" ")
+                    pointer["Run Date"] = converted[0]
+                    pointer["Run time"] = converted[1]
+                    pointer["Start Time"] = getTime(task["Start Time"], "MMM DD, YYYY, h:mm A")
+                    pointer["End Time"] = getTime(task["End Time"], "MMM DD, YYYY, h:mm A")
+                }
             })
         })
         setTaskData(dupTaskData)

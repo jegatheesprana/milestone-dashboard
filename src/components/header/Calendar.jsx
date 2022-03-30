@@ -10,7 +10,7 @@ const Calendar = ({ events, handleClick }) => {
     const mapped = useMemo(() => {
         const innerMappend = events.map((data, id) => {
             return {
-                id,
+                id: data.id,
                 title: data["Run time"],
                 allDay: true,
                 start: moment(data["Run time"], "MM/DD/YYYY h.mm A").toDate(),

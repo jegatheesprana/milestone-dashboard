@@ -42,13 +42,13 @@ const TaskStatusModal = ({
                             {tasks.map((task, id) => (
                                 <tr key={id}>
                                     <td>{id + 1}</td>
-                                    <td>{task["Run Date"]}</td>
-                                    <td>{task["Run time"]}</td>
+                                    <td>{task["Run Date converted"]}</td>
+                                    <td>{task["Run time converted"]}</td>
                                     <td>{task["Job Name"]}</td>
                                     <td>{task["Milestone"]}</td>
                                     <td>{task["Taskflow"]}</td>
-                                    <td>{task["Start Time"]}</td>
-                                    <td>{task["End Time"]}</td>
+                                    <td>{task["Start Time converted"]}</td>
+                                    <td>{task["End Time converted"]}</td>
                                     <td>{task["SubTasks"]}</td>
                                     <td>{task["Run Time"]}</td>
                                     <td>{task["Rows Processed"]}</td>

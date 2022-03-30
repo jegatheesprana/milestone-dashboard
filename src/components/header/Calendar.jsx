@@ -19,7 +19,7 @@ const Calendar = ({ events, handleClick }) => {
         })
         return innerMappend
     }, [events])
-    console.log(events)
+
     return (
         <div>
             {/* <Row style={{ overflow: "auto" }}>

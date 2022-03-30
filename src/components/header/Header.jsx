@@ -71,6 +71,11 @@ const Header = ({ data: notFiltered, selectedDate, setSelectedDate }) => {
         return filtered
     }, [notFiltered, selectedSector])
 
+    const selectedDateLabel = useMemo(() => {
+        const selectedData = data.find((data) => data.id === selectedDate)
+        return selectedData?.["Run time"]
+    }, [data, selectedDate])
+
     return (
         <Container fluid className="py-2 bg-dark text-white">
             <Row>
@@ -121,7 +126,7 @@ const Header = ({ data: notFiltered, selectedDate, setSelectedDate }) => {
                             as={CustomToggle}
                             id="dropdown-custom-components"
                         >
-                            {data[selectedDate]?.["Run time"]}
+                            {selectedDateLabel}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             {/* {data.map((data, id) => (

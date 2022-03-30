@@ -18,11 +18,11 @@ const SubTask = ({ show, handleClose, subTask = {}, timezone }) => {
                         <tbody>
                             <tr>
                                 <td>{`Run Date (${timezone})`}</td>
-                                <td>{subTask["Run Date"]}</td>
+                                <td>{subTask["Run Date converted"]}</td>
                             </tr>
                             <tr>
                                 <td>{`Run time (${timezone})`}</td>
-                                <td>{subTask["Run time"]}</td>
+                                <td>{subTask["Run time converted"]}</td>
                             </tr>
                             <tr>
                                 <td>Job Folder Name</td>
@@ -38,11 +38,11 @@ const SubTask = ({ show, handleClose, subTask = {}, timezone }) => {
                             </tr>
                             <tr>
                                 <td>Start Time</td>
-                                <td>{subTask["Start Time"]}</td>
+                                <td>{subTask["Start Time converted"]}</td>
                             </tr>
                             <tr>
                                 <td>End Time</td>
-                                <td>{subTask["End Time"]}</td>
+                                <td>{subTask["End Time converted"]}</td>
                             </tr>
                             <tr>
                                 <td>Status</td>

@@ -52,18 +52,18 @@ function App() {
                 return stringDate
             case "CST":
                 return momentTimezone
-                    .tz(stringDate, format, "America/New_York")
-                    .tz("America/Chicago")
+                    .tz(stringDate, format, "America/Atikokan")
+                    .tz("America/Monterrey")
                     .format(format)
             case "IST":
                 return momentTimezone
-                    .tz(stringDate, format, "America/New_York")
+                    .tz(stringDate, format, "America/Atikokan")
                     .tz("Asia/Kolkata")
                     .format(format)
             case "SGT":
                 return momentTimezone
-                    .tz(stringDate, format, "America/New_York")
-                    .tz("Singapore")
+                    .tz(stringDate, format, "America/Atikokan")
+                    .tz("Asia/Singapore")
                     .format(format)
         }
     }
@@ -198,10 +198,10 @@ function App() {
                             `${task["Run Date"]} ${task["Run time"]}`,
                             "DD/MM/YYYY HH:mm"
                         ).split(" ")
-                        pointer["Run Date"] = converted[0]
-                        pointer["Run time"] = converted[1]
-                        pointer["Start Time"] = getTime(task["Start Time"], "MMM DD, YYYY, h:mm A")
-                        pointer["End Time"] = getTime(task["End Time"], "MMM DD, YYYY, h:mm A")
+                        pointer["Run Date converted"] = converted[0]
+                        pointer["Run time converted"] = converted[1]
+                        pointer["Start Time converted"] = getTime(task["Start Time"], "MMM DD, YYYY, h:mm A")
+                        pointer["End Time converted"] = getTime(task["End Time"], "MMM DD, YYYY, h:mm A")
                     }
                 })
             })
@@ -219,6 +219,7 @@ function App() {
 
     useEffect(() => {
         if (!taskData) return
+        console.log("Running")
         const dupTaskData = [...taskData]
         dupTaskData.forEach((taskData, dataId) => {
             taskData.tasks.forEach((task, taskId) => {
@@ -229,10 +230,10 @@ function App() {
                         `${task["Run Date"]} ${task["Run time"]}`,
                         "DD/MM/YYYY HH:mm"
                     ).split(" ")
-                    pointer["Run Date"] = converted[0]
-                    pointer["Run time"] = converted[1]
-                    pointer["Start Time"] = getTime(task["Start Time"], "MMM DD, YYYY, h:mm A")
-                    pointer["End Time"] = getTime(task["End Time"], "MMM DD, YYYY, h:mm A")
+                    pointer["Run Date converted"] = converted[0]
+                    pointer["Run time converted"] = converted[1]
+                    pointer["Start Time converted"] = getTime(task["Start Time"], "MMM DD, YYYY, h:mm A")
+                    pointer["End Time converted"] = getTime(task["End Time"], "MMM DD, YYYY, h:mm A")
                 }
             })
         })
